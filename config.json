@@ -8,25 +8,23 @@
   },
   "circles": [
     {
-      "name": "示例圈 A",
-      "description": "这是一个活跃的示例圈子，专注于技术交流与资源共享。",
+      "name": "病娇圈",
+      "description": "没有描述",
       "status": "active",
-      "url": "https://example-a.oc99.top",
-      "tags": ["技术", "开源"]
+      "url": "https://bj.oc99.top",
+      "tags": [
+        "小圈"
+      ]
     },
     {
-      "name": "示例圈 B",
-      "description": "该圈子目前正在进行服务器维护，预计明日恢复。",
-      "status": "maintenance",
-      "url": "https://example-b.oc99.top",
-      "tags": ["社区", "维护中"]
-    },
-    {
-      "name": "示例圈 C",
-      "description": "由于业务调整，该圈子暂时离线，重启时间待定。",
-      "status": "offline",
-      "url": "",
-      "tags": ["暂停"]
+      "name": "UMD",
+      "description": "《无机杀手》二创圈",
+      "status": "active",
+      "url": "https://umd.oc99.top",
+      "tags": [
+        "二创",
+        "同人"
+      ]
     }
   ]
 }
