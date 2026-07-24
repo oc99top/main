@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>OC99 · 圈子家园</title>
+  <!-- Font Awesome 图标库 (免费) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #f5f9fe;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem 1.5rem;
+    }
+
+    .main-card {
+      max-width: 1200px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 48px 48px 32px 32px;
+      box-shadow: 0 20px 50px rgba(0, 20, 40, 0.12), 0 8px 20px rgba(0, 0, 0, 0.03);
+      padding: 2rem 2rem 2.5rem;
+      transition: all 0.2s;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 2px solid rgba(66, 133, 244, 0.15);
+      padding-bottom: 1.25rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      background: #1a2b4c;
+      color: white;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      font-size: 1.8rem;
+      font-weight: 600;
+      box-shadow: 0 8px 14px rgba(26, 43, 76, 0.2);
+    }
+
+    .logo-text {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #0b1a33;
+    }
+    .logo-text span {
+      color: #2a7de1;
+    }
+
+    .subhead {
+      font-size: 0.95rem;
+      color: #3c5a7d;
+      background: #e9f0fa;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(42, 125, 225, 0.2);
+    }
+
+    .subhead i {
+      color: #2a7de1;
+    }
+
+    .notice-wrapper {
+      background: linear-gradient(145deg, #f0f6ff, #e8f0fe);
+      border-radius: 28px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.8rem;
+      border-left: 6px solid #2a7de1;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 12px rgba(42, 125, 225, 0.08);
+    }
+
+    .notice-icon {
+      font-size: 2rem;
+      color: #1a5bbf;
+      background: white;
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.02);
+      flex-shrink: 0;
+    }
+
+    .notice-content {
+      flex: 1;
+    }
+
+    .notice-title {
+      font-weight: 600;
+      color: #0b2b50;
+      letter-spacing: 0.3px;
+      font-size: 1.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .notice-title small {
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #4e6f92;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    .notice-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #1c3a5e;
+      margin-top: 0.25rem;
+      word-break: break-word;
+    }
+
+    .notice-text i {
+      color: #2a7de1;
+      margin-right: 6px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 2rem 0 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .section-title h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0b1a33;
+      letter-spacing: -0.3px;
+    }
+
+    .section-title h2 i {
+      color: #2a7de1;
+      margin-right: 10px;
+    }
+
+    .badge-count {
+      background: #dce6f2;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1d3d66;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 0.8rem;
+    }
+
+    .circle-card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem 1.2rem 1.2rem;
+      box-shadow: 0 8px 22px rgba(0, 20, 40, 0.06);
+      border: 1px solid rgba(66, 133, 244, 0.08);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(2px);
+      position: relative;
+    }
+
+    .circle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(26, 43, 76, 0.10);
+      border-color: rgba(42, 125, 225, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .circle-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0b1f3b;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .circle-name i {
+      color: #2a7de1;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 40px;
+      background: #eaf3e8;
+      color: #1e6b3b;
+      border: 1px solid rgba(34, 154, 68, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-badge.inactive {
+      background: #f2f2f5;
+      color: #6a6f7a;
+      border-color: #d0d4de;
+    }
+
+    .status-badge.warning {
+      background: #fff1e0;
+      color: #b45a1c;
+      border-color: #f7c8a0;
+    }
+
+    .circle-desc {
+      color: #2b4870;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0.2rem 0 1rem;
+      flex: 1;
+      border-top: 1px dashed #e3eaf3;
+      padding-top: 0.8rem;
+    }
+
+    .circle-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #5f7899;
+      border-top: 1px solid #edf2f9;
+      padding-top: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    .circle-meta i {
+      margin-right: 4px;
+      color: #4b7bc0;
+    }
+
+    .doc-link {
+      background: #f1f7fd;
+      border-radius: 40px;
+      padding: 0.2rem 1rem;
+      font-weight: 500;
+      color: #1657b3;
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .doc-link:hover {
+      background: #e2edfe;
+      border-color: #2a7de1;
+    }
+
+    .footer-links {
+      margin-top: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem 2.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .footer-links a {
+      color: #2b4c73;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f0f6fe;
+      padding: 0.4rem 1.2rem 0.4rem 0.8rem;
+      border-radius: 40px;
+      transition: 0.15s;
+    }
+
+    .footer-links a i {
+      background: #1a2b4c;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .footer-links a:hover {
+      background: #dce8fa;
+      transform: translateY(-2px);
+    }
+
+    .config-tip {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #5f7b9e;
+      background: #eef4fc;
+      padding: 0.8rem 1.5rem;
+      border-radius: 60px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(4px);
+    }
+
+    .config-tip i {
+      color: #1d5bbf;
+    }
+    .config-tip code {
+      background: #d4e0f0;
+      padding: 0.1rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #0a2c53;
+    }
+
+    /* 新增：站长联系方式 & AI 标识 */
+    .site-footer {
+      margin-top: 2.5rem;
+      padding-top: 1.8rem;
+      border-top: 2px solid rgba(42, 125, 225, 0.12);
+      text-align: center;
+      color: #4f6f94;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .site-footer .contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eaf1fb;
+      padding: 0.2rem 1.2rem 0.2rem 0.8rem;
+      border-radius: 40px;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    .site-footer .contact i {
+      color: #1a5bbf;
+      background: white;
+      padding: 6px;
+      border-radius: 30px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .site-footer .contact a {
+      color: #0b2b50;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .site-footer .contact a:hover {
+      text-decoration: underline;
+      color: #1a5bbf;
+    }
+
+    .site-footer .meta-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 2rem;
+      font-size: 0.85rem;
+      color: #6d8ab0;
+    }
+
+    .site-footer .meta-info span {
+      background: #f1f7fe;
+      padding: 0.1rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    .site-footer .meta-info i {
+      margin-right: 4px;
+      color: #3c7bcb;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 10px;
+      margin-right: 4px;
+    }
+    .status-dot.active { background: #1f9d4a; }
+    .status-dot.inactive { background: #8e95a3; }
+    .status-dot.warning { background: #d97c2b; }
+
+    @media (max-width: 640px) {
+      .main-card { padding: 1.5rem; }
+      .logo-text { font-size: 1.5rem; }
+      .subhead { font-size: 0.8rem; padding: 0.3rem 1rem; }
+      .notice-wrapper { padding: 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .site-footer .meta-info { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-card" id="app">
+
+    <!-- 头部 -->
+    <header class="header">
+      <div class="logo-area">
+        <div class="logo-icon">OC</div>
+        <div class="logo-text">oc<span>99</span></div>
+      </div>
+      <div class="subhead">
+        <i class="fas fa-shield-halved"></i> 安全 · 和谐 · 共建
+      </div>
+    </header>
+
+    <!-- 公告区域 (动态) -->
+    <div class="notice-wrapper" id="noticeArea">
+      <div class="notice-icon"><i class="fas fa-bullhorn"></i></div>
+      <div class="notice-content">
+        <div class="notice-title" id="noticeTitle">
+          加载公告中...
+          <small><i class="far fa-clock"></i> 实时</small>
+        </div>
+        <div class="notice-text" id="noticeText">
+          <i class="fas fa-chevron-right"></i> 欢迎来到 OC99 家园
+        </div>
+      </div>
+    </div>
+
+    <!-- 圈子列表 -->
+    <div class="section-title">
+      <h2><i class="fas fa-globe-asia"></i> 已注册小圈</h2>
+      <span class="badge-count" id="circleCount">0 个圈子</span>
+    </div>
+
+    <div class="grid" id="circleGrid">
+      <!-- 动态渲染 -->
+    </div>
+
+    <!-- 子站快速入口 -->
+    <div class="footer-links">
+      <a href="https://doc.oc99.top" target="_blank"><i class="fas fa-file-lines"></i> 文档站 · 协议/公告</a>
+      <a href="https://safe.oc99.top" target="_blank"><i class="fas fa-shield-check"></i> 安全查询 · 举报 (在建)</a>
+      <a href="#" onclick="alert('配置示例：请修改 config.json 更新公告与圈子数据。'); return false;"><i class="fas fa-sliders-h"></i> 配置管理</a>
+    </div>
+
+    <!-- 配置提示 (仅示意) -->
+    <div class="config-tip">
+      <i class="fas fa-pen-to-square"></i>
+      动态配置 · 编辑 <code>config.json</code> 即可更新公告与圈子
+    </div>
+
+    <!-- 新增：站长联系方式 & AI 生成标识 & 后期重构说明 -->
+    <footer class="site-footer">
+      <div class="contact">
+        <i class="fas fa-envelope"></i>
+        站长联系：<a href="mailto:moss@aoeb101la.top">moss@aoeb101la.top</a>
+      </div>
+      <div class="meta-info">
+        <span><i class="fas fa-robot"></i> 当前版本由 AI 辅助生成</span>
+        <span><i class="fas fa-code-branch"></i> 后期将进行人工重构与优化</span>
+        <span><i class="far fa-clock"></i> 持续迭代中</span>
+      </div>
+      <div style="margin-top: 0.6rem; font-size: 0.8rem; color: #8aa3c2;">
+        <i class="far fa-copyright"></i> OC99  · 共建安全和谐圈子
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      "use strict";
+
+      // 默认数据 (config.json 未加载时使用)
+      const DEFAULT_CONFIG = {
+        "notice": {
+          "title": "📢 共建和谐 · 安全发展",
+          "content": "欢迎各圈入驻 OC99 平台。我们持续为圈子提供技术支持与安全守护。近期将更新《圈子安全公约》，请留意文档站。"
+        },
+        "circles": [
+          { "name": "二次元同好", "description": "动漫、漫画、游戏交流，友爱互助。", "status": "active", "docLink": "https://doc.oc99.top/circle/acg" },
+          { "name": "技术开发者", "description": "代码、架构、开源，技术驱动进步。", "status": "active", "docLink": "https://doc.oc99.top/circle/dev" },
+          { "name": "文学创作社", "description": "写作、诗歌、小说，文字的温度。", "status": "warning", "docLink": "https://doc.oc99.top/circle/literature" },
+          { "name": "户外运动圈", "description": "徒步、骑行、登山，热爱自然。", "status": "inactive", "docLink": "https://doc.oc99.top/circle/outdoor" },
+          { "name": "音乐爱好者", "description": "乐器、声乐、作曲，旋律之友。", "status": "active", "docLink": "https://doc.oc99.top/circle/music" }
+        ]
+      };
+
+      const noticeTitle = document.getElementById('noticeTitle');
+      const noticeText = document.getElementById('noticeText');
+      const circleGrid = document.getElementById('circleGrid');
+      const circleCount = document.getElementById('circleCount');
+
+      const statusMap = {
+        'active': { label: '活跃', icon: 'fa-circle-check', cls: 'active' },
+        'inactive': { label: '维护中', icon: 'fa-circle-pause', cls: 'inactive' },
+        'warning': { label: '注意', icon: 'fa-triangle-exclamation', cls: 'warning' }
+      };
+
+      function render(config) {
+        if (config.notice) {
+          const n = config.notice;
+          noticeTitle.innerHTML = `${n.title || '📢 公告'} <small><i class="far fa-clock"></i> 最新</small>`;
+          noticeText.innerHTML = `<i class="fas fa-chevron-right"></i> ${n.content || '欢迎来到 OC99 家园'}`;
+        } else {
+          noticeTitle.innerHTML = '📢 公告';
+          noticeText.innerHTML = '<i class="fas fa-chevron-right"></i> 欢迎来到 OC99 家园';
+        }
+
+        const circles = config.circles || [];
+        circleCount.textContent = `${circles.length} 个圈子`;
+
+        if (circles.length === 0) {
+          circleGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2.5rem; color:#4d6a8f; background:#f3f8ff; border-radius:48px;">
+            <i class="fas fa-circle-plus" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>
+            暂无已注册圈子，期待您的入驻！
+          </div>`;
+          return;
+        }
+
+        let html = '';
+        circles.forEach(c => {
+          const status = statusMap[c.status] || statusMap['inactive'];
+          const statusLabel = status.label;
+          const statusClass = status.cls;
+          const iconClass = status.icon || 'fa-circle';
+          const docLink = c.docLink || '#';
+          const circleName = c.name || '未命名';
+          const desc = c.description || '暂无描述';
+
+          html += `
+            <div class="circle-card">
+              <div class="card-header">
+                <span class="circle-name"><i class="fas fa-hashtag"></i> ${circleName}</span>
+                <span class="status-badge ${statusClass}"><i class="fas ${iconClass}"></i> ${statusLabel}</span>
+              </div>
+              <div class="circle-desc">${desc}</div>
+              <div class="circle-meta">
+                <span><i class="fas fa-flag"></i> 状态 · ${statusLabel}</span>
+                <a href="${docLink}" target="_blank" class="doc-link"><i class="fas fa-book-open"></i> 文档</a>
+              </div>
+            </div>
+          `;
+        });
+        circleGrid.innerHTML = html;
+      }
+
+      function loadConfig() {
+        const configUrl = 'config.json';
+
+        fetch(configUrl, { cache: 'no-store' })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data && typeof data === 'object') {
+              render(data);
+            } else {
+              console.warn('config.json 数据格式无效，使用默认配置');
+              render(DEFAULT_CONFIG);
+            }
+          })
+          .catch(err => {
+            console.warn('无法加载 config.json，使用默认配置:', err);
+            render(DEFAULT_CONFIG);
+          });
+      }
+
+      loadConfig();
+    })();
+  </script>
+</body>
+</html>
