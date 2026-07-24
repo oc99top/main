@@ -1,634 +1,487 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>OC99 · 圈子家园</title>
-  <!-- Font Awesome 图标库 (免费) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OC99.TOP · 圈子共建</title>
+    <!-- 使用清爽的字体 & 简单重置 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #f5f9fe;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1.5rem 1.5rem;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6f9fc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .main-card {
-      max-width: 1200px;
-      width: 100%;
-      background: #ffffff;
-      border-radius: 48px 48px 32px 32px;
-      box-shadow: 0 20px 50px rgba(0, 20, 40, 0.12), 0 8px 20px rgba(0, 0, 0, 0.03);
-      padding: 2rem 2rem 2.5rem;
-      transition: all 0.2s;
-    }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,20,30,0.15);
+            padding: 2.5rem 2.8rem;
+            transition: all 0.2s;
+        }
 
-    .header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2.5rem;
-      border-bottom: 2px solid rgba(66, 133, 244, 0.15);
-      padding-bottom: 1.25rem;
-    }
+        /* header */
+        .brand {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 1.2rem;
+            margin-bottom: 2rem;
+        }
 
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+        .brand h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0b2b44, #1a4b6d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .brand h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #64748b;
+            background: none;
+            -webkit-text-fill-color: #64748b;
+            margin-left: 0.5rem;
+        }
 
-    .logo-icon {
-      background: #1a2b4c;
-      color: white;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-      font-size: 1.8rem;
-      font-weight: 600;
-      box-shadow: 0 8px 14px rgba(26, 43, 76, 0.2);
-    }
+        .tagline {
+            color: #475569;
+            background: #f1f5f9;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
 
-    .logo-text {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #0b1a33;
-    }
-    .logo-text span {
-      color: #2a7de1;
-    }
+        /* 公告卡片 */
+        .notice-board {
+            background: #f8fafc;
+            border-left: 6px solid #2b6f9e;
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.8rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
 
-    .subhead {
-      font-size: 0.95rem;
-      color: #3c5a7d;
-      background: #e9f0fa;
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(42, 125, 225, 0.2);
-    }
+        .notice-board h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0f3b55;
+            margin-bottom: 0.5rem;
+        }
 
-    .subhead i {
-      color: #2a7de1;
-    }
+        .notice-board h2 span {
+            background: #2b6f9e;
+            color: white;
+            font-size: 0.7rem;
+            border-radius: 60px;
+            padding: 0.2rem 0.8rem;
+            letter-spacing: 0.4px;
+        }
 
-    .notice-wrapper {
-      background: linear-gradient(145deg, #f0f6ff, #e8f0fe);
-      border-radius: 28px;
-      padding: 1.5rem 2rem;
-      margin-bottom: 2.8rem;
-      border-left: 6px solid #2a7de1;
-      display: flex;
-      align-items: flex-start;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 12px rgba(42, 125, 225, 0.08);
-    }
+        .notice-content {
+            font-size: 1.05rem;
+            color: #1e293b;
+            padding: 0.4rem 0 0.2rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .notice-meta {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: #64748b;
+            border-top: 1px dashed #dce2ea;
+            padding-top: 0.7rem;
+            display: flex;
+            justify-content: flex-end;
+        }
 
-    .notice-icon {
-      font-size: 2rem;
-      color: #1a5bbf;
-      background: white;
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.02);
-      flex-shrink: 0;
-    }
+        /* 圈子网格 */
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2.2rem 0 1.2rem 0;
+        }
+        .section-title h3 {
+            font-weight: 600;
+            font-size: 1.6rem;
+            letter-spacing: -0.01em;
+            color: #0b2b44;
+        }
+        .section-title .badge {
+            background: #d9e6f2;
+            color: #1f4b6e;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
 
-    .notice-content {
-      flex: 1;
-    }
+        .circle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.8rem;
+            margin-top: 0.5rem;
+        }
 
-    .notice-title {
-      font-weight: 600;
-      color: #0b2b50;
-      letter-spacing: 0.3px;
-      font-size: 1.1rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 10px;
-    }
+        .circle-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.5rem 1.2rem 1.2rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0,0,0,0.03);
+            border: 1px solid #edf2f7;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .circle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px -8px rgba(18, 52, 77, 0.10);
+            border-color: #cbdde9;
+        }
 
-    .notice-title small {
-      font-weight: 400;
-      font-size: 0.8rem;
-      color: #4e6f92;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 0.2rem 1rem;
-      border-radius: 30px;
-    }
+        .circle-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #13384f;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .circle-name .status-badge {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 60px;
+            background: #e6edf4;
+            color: #2d5a7a;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .status-badge.active {
+            background: #d4edda;
+            color: #0c5e3a;
+        }
+        .status-badge.maintenance {
+            background: #fff3cd;
+            color: #8a6d1f;
+        }
+        .status-badge.offline {
+            background: #f8d7da;
+            color: #a12434;
+        }
 
-    .notice-text {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #1c3a5e;
-      margin-top: 0.25rem;
-      word-break: break-word;
-    }
+        .circle-desc {
+            font-size: 0.9rem;
+            color: #475569;
+            margin: 0.6rem 0 0.8rem 0;
+            line-height: 1.4;
+            flex: 1;
+        }
 
-    .notice-text i {
-      color: #2a7de1;
-      margin-right: 6px;
-    }
+        .circle-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            border-top: 1px solid #ecf1f7;
+            padding-top: 0.8rem;
+            margin-top: 0.3rem;
+        }
+        .circle-meta a {
+            color: #1f5e85;
+            text-decoration: none;
+            font-weight: 500;
+            background: #ecf3f9;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            transition: background 0.1s;
+        }
+        .circle-meta a:hover {
+            background: #d4e3ef;
+        }
 
-    .section-title {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin: 2rem 0 1.2rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
+        .substack {
+            margin-top: 2.8rem;
+            border-top: 1px solid #e2eaf0;
+            padding-top: 1.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #3c5a70;
+            font-size: 0.9rem;
+        }
+        .substack .links a {
+            color: #1f5e85;
+            text-decoration: none;
+            margin-left: 1.2rem;
+            font-weight: 500;
+        }
+        .substack .links a:hover {
+            text-decoration: underline;
+        }
 
-    .section-title h2 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: #0b1a33;
-      letter-spacing: -0.3px;
-    }
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #64748b;
+            background: #f8fafc;
+            border-radius: 40px;
+            font-size: 0.95rem;
+        }
 
-    .section-title h2 i {
-      color: #2a7de1;
-      margin-right: 10px;
-    }
+        /* 响应式 */
+        @media (max-width: 700px) {
+            .container { padding: 1.8rem 1.2rem; }
+            .brand h1 { font-size: 1.8rem; }
+            .brand { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .notice-board { padding: 1.2rem; }
+            .circle-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .circle-grid { grid-template-columns: 1fr; }
+            .substack { flex-direction: column; gap: 0.8rem; align-items: flex-start; }
+            .substack .links a { margin-left: 0; margin-right: 1.2rem; }
+        }
 
-    .badge-count {
-      background: #dce6f2;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #1d3d66;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-top: 0.8rem;
-    }
-
-    .circle-card {
-      background: white;
-      border-radius: 28px;
-      padding: 1.5rem 1.2rem 1.2rem;
-      box-shadow: 0 8px 22px rgba(0, 20, 40, 0.06);
-      border: 1px solid rgba(66, 133, 244, 0.08);
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      backdrop-filter: blur(2px);
-      position: relative;
-    }
-
-    .circle-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 34px rgba(26, 43, 76, 0.10);
-      border-color: rgba(42, 125, 225, 0.25);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.9rem;
-    }
-
-    .circle-name {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #0b1f3b;
-      letter-spacing: -0.2px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .circle-name i {
-      color: #2a7de1;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-
-    .status-badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.25rem 0.8rem;
-      border-radius: 40px;
-      background: #eaf3e8;
-      color: #1e6b3b;
-      border: 1px solid rgba(34, 154, 68, 0.2);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .status-badge.inactive {
-      background: #f2f2f5;
-      color: #6a6f7a;
-      border-color: #d0d4de;
-    }
-
-    .status-badge.warning {
-      background: #fff1e0;
-      color: #b45a1c;
-      border-color: #f7c8a0;
-    }
-
-    .circle-desc {
-      color: #2b4870;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin: 0.2rem 0 1rem;
-      flex: 1;
-      border-top: 1px dashed #e3eaf3;
-      padding-top: 0.8rem;
-    }
-
-    .circle-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: #5f7899;
-      border-top: 1px solid #edf2f9;
-      padding-top: 0.8rem;
-      margin-top: 0.2rem;
-    }
-
-    .circle-meta i {
-      margin-right: 4px;
-      color: #4b7bc0;
-    }
-
-    .doc-link {
-      background: #f1f7fd;
-      border-radius: 40px;
-      padding: 0.2rem 1rem;
-      font-weight: 500;
-      color: #1657b3;
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: 0.15s;
-      border: 1px solid transparent;
-    }
-
-    .doc-link:hover {
-      background: #e2edfe;
-      border-color: #2a7de1;
-    }
-
-    .footer-links {
-      margin-top: 3rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.8rem 2.8rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(0, 0, 0, 0.03);
-    }
-
-    .footer-links a {
-      color: #2b4c73;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #f0f6fe;
-      padding: 0.4rem 1.2rem 0.4rem 0.8rem;
-      border-radius: 40px;
-      transition: 0.15s;
-    }
-
-    .footer-links a i {
-      background: #1a2b4c;
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-    }
-
-    .footer-links a:hover {
-      background: #dce8fa;
-      transform: translateY(-2px);
-    }
-
-    .config-tip {
-      margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #5f7b9e;
-      background: #eef4fc;
-      padding: 0.8rem 1.5rem;
-      border-radius: 60px;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      backdrop-filter: blur(4px);
-    }
-
-    .config-tip i {
-      color: #1d5bbf;
-    }
-    .config-tip code {
-      background: #d4e0f0;
-      padding: 0.1rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      color: #0a2c53;
-    }
-
-    /* 新增：站长联系方式 & AI 标识 */
-    .site-footer {
-      margin-top: 2.5rem;
-      padding-top: 1.8rem;
-      border-top: 2px solid rgba(42, 125, 225, 0.12);
-      text-align: center;
-      color: #4f6f94;
-      font-size: 0.9rem;
-      line-height: 1.8;
-    }
-
-    .site-footer .contact {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #eaf1fb;
-      padding: 0.2rem 1.2rem 0.2rem 0.8rem;
-      border-radius: 40px;
-      margin-bottom: 0.8rem;
-      font-weight: 500;
-    }
-
-    .site-footer .contact i {
-      color: #1a5bbf;
-      background: white;
-      padding: 6px;
-      border-radius: 30px;
-      width: 28px;
-      height: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .site-footer .contact a {
-      color: #0b2b50;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .site-footer .contact a:hover {
-      text-decoration: underline;
-      color: #1a5bbf;
-    }
-
-    .site-footer .meta-info {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem 2rem;
-      font-size: 0.85rem;
-      color: #6d8ab0;
-    }
-
-    .site-footer .meta-info span {
-      background: #f1f7fe;
-      padding: 0.1rem 0.8rem;
-      border-radius: 30px;
-    }
-
-    .site-footer .meta-info i {
-      margin-right: 4px;
-      color: #3c7bcb;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 10px;
-      margin-right: 4px;
-    }
-    .status-dot.active { background: #1f9d4a; }
-    .status-dot.inactive { background: #8e95a3; }
-    .status-dot.warning { background: #d97c2b; }
-
-    @media (max-width: 640px) {
-      .main-card { padding: 1.5rem; }
-      .logo-text { font-size: 1.5rem; }
-      .subhead { font-size: 0.8rem; padding: 0.3rem 1rem; }
-      .notice-wrapper { padding: 1rem; }
-      .grid { grid-template-columns: 1fr; }
-      .site-footer .meta-info { flex-direction: column; align-items: center; }
-    }
-  </style>
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <div class="main-card" id="app">
+    <div class="container" id="app">
+        <!-- 头部 -->
+        <header class="brand">
+            <h1>OC99<span style="font-weight:400; background:none; -webkit-text-fill-color:#1e4b6b;">.TOP</span> <small>· 圈子共建</small></h1>
+            <div class="tagline">⚡ 安全 · 和谐 · 技术支持</div>
+        </header>
 
-    <!-- 头部 -->
-    <header class="header">
-      <div class="logo-area">
-        <div class="logo-icon">OC</div>
-        <div class="logo-text">oc<span>99</span></div>
-      </div>
-      <div class="subhead">
-        <i class="fas fa-shield-halved"></i> 安全 · 和谐 · 共建
-      </div>
-    </header>
-
-    <!-- 公告区域 (动态) -->
-    <div class="notice-wrapper" id="noticeArea">
-      <div class="notice-icon"><i class="fas fa-bullhorn"></i></div>
-      <div class="notice-content">
-        <div class="notice-title" id="noticeTitle">
-          加载公告中...
-          <small><i class="far fa-clock"></i> 实时</small>
-        </div>
-        <div class="notice-text" id="noticeText">
-          <i class="fas fa-chevron-right"></i> 欢迎来到 OC99 家园
-        </div>
-      </div>
-    </div>
-
-    <!-- 圈子列表 -->
-    <div class="section-title">
-      <h2><i class="fas fa-globe-asia"></i> 已注册小圈</h2>
-      <span class="badge-count" id="circleCount">0 个圈子</span>
-    </div>
-
-    <div class="grid" id="circleGrid">
-      <!-- 动态渲染 -->
-    </div>
-
-    <!-- 子站快速入口 -->
-    <div class="footer-links">
-      <a href="https://doc.oc99.top" target="_blank"><i class="fas fa-file-lines"></i> 文档站 · 协议/公告</a>
-      <a href="https://safe.oc99.top" target="_blank"><i class="fas fa-shield-check"></i> 安全查询 · 举报 (在建)</a>
-      <a href="#" onclick="alert('配置示例：请修改 config.json 更新公告与圈子数据。'); return false;"><i class="fas fa-sliders-h"></i> 配置管理</a>
-    </div>
-
-    <!-- 配置提示 (仅示意) -->
-    <div class="config-tip">
-      <i class="fas fa-pen-to-square"></i>
-      动态配置 · 编辑 <code>config.json</code> 即可更新公告与圈子
-    </div>
-
-    <!-- 新增：站长联系方式 & AI 生成标识 & 后期重构说明 -->
-    <footer class="site-footer">
-      <div class="contact">
-        <i class="fas fa-envelope"></i>
-        站长联系：<a href="mailto:moss@aoeb101la.top">moss@aoeb101la.top</a>
-      </div>
-      <div class="meta-info">
-        <span><i class="fas fa-robot"></i> 当前版本由 AI 辅助生成</span>
-        <span><i class="fas fa-code-branch"></i> 后期将进行人工重构与优化</span>
-        <span><i class="far fa-clock"></i> 持续迭代中</span>
-      </div>
-      <div style="margin-top: 0.6rem; font-size: 0.8rem; color: #8aa3c2;">
-        <i class="far fa-copyright"></i> OC99  · 共建安全和谐圈子
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    (function() {
-      "use strict";
-
-      // 默认数据 (config.json 未加载时使用)
-      const DEFAULT_CONFIG = {
-        "notice": {
-          "title": "📢 共建和谐 · 安全发展",
-          "content": "欢迎各圈入驻 OC99 平台。我们持续为圈子提供技术支持与安全守护。近期将更新《圈子安全公约》，请留意文档站。"
-        },
-        "circles": [
-          { "name": "二次元同好", "description": "动漫、漫画、游戏交流，友爱互助。", "status": "active", "docLink": "https://doc.oc99.top/circle/acg" },
-          { "name": "技术开发者", "description": "代码、架构、开源，技术驱动进步。", "status": "active", "docLink": "https://doc.oc99.top/circle/dev" },
-          { "name": "文学创作社", "description": "写作、诗歌、小说，文字的温度。", "status": "warning", "docLink": "https://doc.oc99.top/circle/literature" },
-          { "name": "户外运动圈", "description": "徒步、骑行、登山，热爱自然。", "status": "inactive", "docLink": "https://doc.oc99.top/circle/outdoor" },
-          { "name": "音乐爱好者", "description": "乐器、声乐、作曲，旋律之友。", "status": "active", "docLink": "https://doc.oc99.top/circle/music" }
-        ]
-      };
-
-      const noticeTitle = document.getElementById('noticeTitle');
-      const noticeText = document.getElementById('noticeText');
-      const circleGrid = document.getElementById('circleGrid');
-      const circleCount = document.getElementById('circleCount');
-
-      const statusMap = {
-        'active': { label: '活跃', icon: 'fa-circle-check', cls: 'active' },
-        'inactive': { label: '维护中', icon: 'fa-circle-pause', cls: 'inactive' },
-        'warning': { label: '注意', icon: 'fa-triangle-exclamation', cls: 'warning' }
-      };
-
-      function render(config) {
-        if (config.notice) {
-          const n = config.notice;
-          noticeTitle.innerHTML = `${n.title || '📢 公告'} <small><i class="far fa-clock"></i> 最新</small>`;
-          noticeText.innerHTML = `<i class="fas fa-chevron-right"></i> ${n.content || '欢迎来到 OC99 家园'}`;
-        } else {
-          noticeTitle.innerHTML = '📢 公告';
-          noticeText.innerHTML = '<i class="fas fa-chevron-right"></i> 欢迎来到 OC99 家园';
-        }
-
-        const circles = config.circles || [];
-        circleCount.textContent = `${circles.length} 个圈子`;
-
-        if (circles.length === 0) {
-          circleGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2.5rem; color:#4d6a8f; background:#f3f8ff; border-radius:48px;">
-            <i class="fas fa-circle-plus" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>
-            暂无已注册圈子，期待您的入驻！
-          </div>`;
-          return;
-        }
-
-        let html = '';
-        circles.forEach(c => {
-          const status = statusMap[c.status] || statusMap['inactive'];
-          const statusLabel = status.label;
-          const statusClass = status.cls;
-          const iconClass = status.icon || 'fa-circle';
-          const docLink = c.docLink || '#';
-          const circleName = c.name || '未命名';
-          const desc = c.description || '暂无描述';
-
-          html += `
-            <div class="circle-card">
-              <div class="card-header">
-                <span class="circle-name"><i class="fas fa-hashtag"></i> ${circleName}</span>
-                <span class="status-badge ${statusClass}"><i class="fas ${iconClass}"></i> ${statusLabel}</span>
-              </div>
-              <div class="circle-desc">${desc}</div>
-              <div class="circle-meta">
-                <span><i class="fas fa-flag"></i> 状态 · ${statusLabel}</span>
-                <a href="${docLink}" target="_blank" class="doc-link"><i class="fas fa-book-open"></i> 文档</a>
-              </div>
+        <!-- 公告区域 (动态) -->
+        <div class="notice-board" id="noticeBoard">
+            <h2>
+                📢 站内公告
+                <span id="noticeTag">最新</span>
+            </h2>
+            <div class="notice-content" id="noticeContent">
+                加载公告中...
             </div>
-          `;
-        });
-        circleGrid.innerHTML = html;
-      }
+            <div class="notice-meta" id="noticeMeta"></div>
+        </div>
 
-      function loadConfig() {
-        const configUrl = 'config.json';
+        <!-- 圈子列表 -->
+        <div class="section-title">
+            <h3>🌐 已注册小圈</h3>
+            <span class="badge" id="circleCount">0 个</span>
+        </div>
 
-        fetch(configUrl, { cache: 'no-store' })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
+        <div id="circleGrid" class="circle-grid">
+            <!-- 动态渲染卡片 -->
+        </div>
+
+        <!-- 子站 & 其他 -->
+        <div class="substack">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <span>📄 <a href="https://doc.oc99.top" target="_blank">doc.oc99.top</a> · 协议/公告/群规</span>
+                <span>🛡️ <a href="https://safe.oc99.top" target="_blank">safe.oc99.top</a> · 安全查询/举报 <span style="color:#8b9eb0; font-size:0.75rem;">(建设中)</span></span>
+            </div>
+            <div class="links">
+                <a href="#">关于</a>
+                <a href="#">加入</a>
+            </div>
+        </div>
+        <div class="footer-note">
+            OC99.TOP · 维护圈子生态 · 配置驱动
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 全局状态 ----------
+            const CONFIG_PATH = 'config.json';   // 独立配置文件
+
+            // DOM 引用
+            const noticeContent = document.getElementById('noticeContent');
+            const noticeMeta = document.getElementById('noticeMeta');
+            const noticeTag = document.getElementById('noticeTag');
+            const circleGrid = document.getElementById('circleGrid');
+            const circleCount = document.getElementById('circleCount');
+
+            // ---------- 辅助函数 ----------
+            function getStatusText(status) {
+                const map = {
+                    'active': '🟢 活跃',
+                    'maintenance': '🟡 维护',
+                    'offline': '🔴 离线',
+                    // fallback
+                };
+                return map[status] || status || '未知';
             }
-            return response.json();
-          })
-          .then(data => {
-            if (data && typeof data === 'object') {
-              render(data);
-            } else {
-              console.warn('config.json 数据格式无效，使用默认配置');
-              render(DEFAULT_CONFIG);
-            }
-          })
-          .catch(err => {
-            console.warn('无法加载 config.json，使用默认配置:', err);
-            render(DEFAULT_CONFIG);
-          });
-      }
 
-      loadConfig();
-    })();
-  </script>
+            function getStatusClass(status) {
+                const map = {
+                    'active': 'active',
+                    'maintenance': 'maintenance',
+                    'offline': 'offline',
+                };
+                return map[status] || '';
+            }
+
+            // 渲染圈子卡片
+            function renderCircles(circles) {
+                if (!circles || circles.length === 0) {
+                    circleGrid.innerHTML = `<div class="empty-state">✨ 暂无已注册小圈，等待你的加入</div>`;
+                    circleCount.textContent = '0 个';
+                    return;
+                }
+
+                let html = '';
+                circles.forEach(c => {
+                    const statusClass = getStatusClass(c.status);
+                    const statusDisplay = getStatusText(c.status);
+                    // 安全处理描述
+                    const desc = c.description || '—';
+                    // 如果有 url 则显示链接，否则占位
+                    const linkHtml = c.url 
+                        ? `<a href="${c.url}" target="_blank">访问 →</a>` 
+                        : `<span style="color:#9aaec0;">暂无链接</span>`;
+
+                    html += `
+                        <div class="circle-card">
+                            <div class="circle-name">
+                                ${c.name || '未命名圈子'}
+                                <span class="status-badge ${statusClass}">${statusDisplay}</span>
+                            </div>
+                            <div class="circle-desc">${desc}</div>
+                            <div class="circle-meta">
+                                <span>${c.tags ? c.tags.join(' · ') : ''}</span>
+                                ${linkHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+                circleGrid.innerHTML = html;
+                circleCount.textContent = `${circles.length} 个`;
+            }
+
+            // 渲染公告
+            function renderNotice(notice) {
+                if (!notice) {
+                    noticeContent.textContent = '暂无公告，请保持关注。';
+                    noticeMeta.textContent = '';
+                    noticeTag.textContent = '📌';
+                    return;
+                }
+                // 标题 (如果有)
+                const title = notice.title ? `【${notice.title}】` : '';
+                const content = notice.content || '（空公告）';
+                // 支持换行
+                noticeContent.innerHTML = `${title ? `<strong>${title}</strong><br>` : ''}${content.replace(/\n/g, '<br>')}`;
+                
+                // 更新时间/标签
+                let metaParts = [];
+                if (notice.date) metaParts.push(`📅 ${notice.date}`);
+                if (notice.author) metaParts.push(`✏️ ${notice.author}`);
+                noticeMeta.textContent = metaParts.join(' · ');
+                
+                // 标签小标记 (可根据类型)
+                if (notice.type) {
+                    const typeMap = {
+                        '重要': '🔔',
+                        '更新': '🔄',
+                        '维护': '🛠️',
+                    };
+                    noticeTag.textContent = typeMap[notice.type] || '📢';
+                } else {
+                    noticeTag.textContent = '📢';
+                }
+            }
+
+            // ---------- 加载 config.json ----------
+            async function loadConfig() {
+                try {
+                    const response = await fetch(CONFIG_PATH, {
+                        cache: 'no-cache', // 防止浏览器强缓存，便于编辑后刷新
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} — 无法加载 config.json`);
+                    }
+                    const config = await response.json();
+
+                    // 校验基本结构
+                    if (!config) throw new Error('配置为空');
+
+                    // 1. 公告
+                    const notice = config.notice || null;
+                    renderNotice(notice);
+
+                    // 2. 圈子列表
+                    const circles = config.circles || [];
+                    if (!Array.isArray(circles)) {
+                        console.warn('circles 字段不是数组，使用空列表');
+                        renderCircles([]);
+                    } else {
+                        renderCircles(circles);
+                    }
+
+                    // 可选：额外展示版本或更新时间，略
+
+                } catch (error) {
+                    console.error('加载 config.json 失败:', error);
+                    // 显示错误状态，但保持界面友好
+                    noticeContent.textContent = '⚠️ 无法加载公告配置，请检查 config.json 文件。';
+                    noticeMeta.textContent = '请确保文件存在且格式正确';
+                    circleGrid.innerHTML = `<div class="empty-state">⚠️ 加载圈子数据失败，请检查网络或配置文件</div>`;
+                    circleCount.textContent = '加载失败';
+                }
+            }
+
+            // 启动加载
+            loadConfig();
+
+            // 可选： 如果用户想手动刷新（但简单起见，加载一次）
+            // 若未来需要定期刷新，可加上 setInterval，但最好由用户手动刷新页面
+            // 暴露 reload 到控制台方便调试
+            window.reloadOC = loadConfig;
+        })();
+    </script>
 </body>
 </html>

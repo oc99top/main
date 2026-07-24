@@ -1,33 +1,32 @@
 {
   "notice": {
-    "title": "📢 共建和谐 · 安全发展",
-    "content": "欢迎各圈入驻 OC99 平台。我们持续为圈子提供技术支持与安全守护。"
+    "title": "欢迎来到 OC99.TOP",
+    "content": "我们致力于维护各个圈子的发展、安全与和谐。\n如果您需要技术支持或希望注册新圈子，请通过下方链接联系我们。",
+    "date": "2026-07-24",
+    "author": "OC99 管理组",
+    "type": "重要"
   },
   "circles": [
     {
-      "name": "文档站",
-      "description": "各种协议、群规、处理方案",
+      "name": "示例圈 A",
+      "description": "这是一个活跃的示例圈子，专注于技术交流与资源共享。",
       "status": "active",
-      "docLink": "https://doc.oc99.top"
+      "url": "https://example-a.oc99.top",
+      "tags": ["技术", "开源"]
     },
     {
-      "name": "论坛",
-      "description": "emmmmm",
-      "status": "inactive",
-      "docLink": "dw.oc99.top"
+      "name": "示例圈 B",
+      "description": "该圈子目前正在进行服务器维护，预计明日恢复。",
+      "status": "maintenance",
+      "url": "https://example-b.oc99.top",
+      "tags": ["社区", "维护中"]
     },
     {
-      "name": "UMD",
-      "description": "无机杀手二创组织",
-      "status": "active",
-      "docLink": "umd.oc99.top"
-    },
-    {
-      "name": "安全平台",
-      "description": "在此处举报、建议、申诉",
-      "status": "inactive",
-      "docLink": "https://safe.oc99.top"
+      "name": "示例圈 C",
+      "description": "由于业务调整，该圈子暂时离线，重启时间待定。",
+      "status": "offline",
+      "url": "",
+      "tags": ["暂停"]
     }
   ]
 }
-/* active（活跃）、inactive（维护中）或 warning（注意） */
