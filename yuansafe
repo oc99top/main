@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御桉防御机器人 - yuan.oc99.top 官方产品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #0b101a;
+            background-image: radial-gradient(circle at 5% 20%, #14223b 0%, transparent 45%),
+                              radial-gradient(circle at 95% 80%, #0f1b30 0%, transparent 40%);
+            color: #e4edf7;
+            line-height: 1.8;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        /* 头部标题区域 */
+        .hero-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-header h1 {
+            font-size: 42px;
+            color: #4ab8ff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 14px #2196f3, 0 0 26px rgba(33, 150, 243, 0.25);
+            margin-bottom: 10px;
+        }
+
+        .domain-tag {
+            font-size: 18px;
+            color: #72bfff;
+            margin-bottom: 8px;
+        }
+
+        .sub-title {
+            color: #96b2d3;
+            font-size: 16px;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: rgba(16, 23, 38, 0.85);
+            border: 1px solid #283a59;
+            border-radius: 14px;
+            padding: 32px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #4ab8ff;
+            box-shadow: 0 0 30px rgba(33, 150, 243, 0.12);
+        }
+
+        .card h2 {
+            color: #66bfff;
+            font-size: 26px;
+            margin-bottom: 18px;
+            border-left: 4px solid #4ab8ff;
+            padding-left: 12px;
+        }
+
+        .card p {
+            color: #c9d9ec;
+            font-size: 15px;
+        }
+
+        /* 功能网格布局 */
+        .func-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .func-item {
+            background: #111a2b;
+            border: 1px solid #23334e;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .func-item h3 {
+            color: #4ab8ff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .func-item p {
+            color: #96b2d3;
+            font-size: 14px;
+        }
+
+        /* 官方联系区块 */
+        .contact-box {
+            margin-top: 10px;
+            padding-top: 25px;
+            border-top: 1px dashed #283a59;
+        }
+
+        .contact-box h3 {
+            color: #66bfff;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .contact-item {
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .contact-item a {
+            color: #4ab8ff;
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 1px solid #283a59;
+            color: #63799c;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部标题 -->
+        <div class="hero-header">
+            <h1>御桉防御机器人</h1>
+            <div class="domain-tag">官方站点：yuan.oc99.top</div>
+            <div class="sub-title">OC99官方出品 · 全平台社群安全风控防御系统</div>
+        </div>
+
+        <!-- 产品简介 -->
+        <div class="card">
+            <h2>产品概述</h2>
+            <p>
+                御桉防御机器人是 yuan.oc99.top（OC99官方）的专业社群安全管理机器人，主要面向QQ社群、Discord服务器、各类兴趣交流群组提供一站式消息风控与社群治理解决方案。
+                系统融合关键词库过滤、AI上下文语义识别、用户行为频次检测三重防护逻辑，自动拦截广告引流、恶意刷屏、骚扰纠缠、引战吵架、违规敏感内容、恶意@轰炸等不良信息，配套完整处罚体系、操作日志存档、管理员白名单、自定义规则库等实用能力，大幅降低社群管理员日常运维压力，为圈子搭建干净、稳定、合规的交流环境。
+            </p>
+        </div>
+
+        <!-- 核心功能模块 -->
+        <div class="card">
+            <h2>核心防御与管理功能</h2>
+            <div class="func-grid">
+                <div class="func-item">
+                    <h3>智能违规内容拦截</h3>
+                    <p>内置持续更新的违规词库，可识别隐晦暗语、变种引流链接、变相违规话术，自动撤回违规消息并记录违规行为。</p>
+                </div>
+                <div class="func-item">
+                    <h3>用户骚扰行为风控</h3>
+                    <p>监控短时间高频刷屏、重复艾特骚扰、连续私信轰炸等异常行为，超出阈值自动限制发言权限。</p>
+                </div>
+                <div class="func-item">
+                    <h3>阶梯式分级处罚机制</h3>
+                    <p>支持警告、限时禁言、临时移出、永久拉黑多层处罚策略，规则可由后台根据社群需求自由配置。</p>
+                </div>
+                <div class="func-item">
+                    <h3>全量操作日志留存</h3>
+                    <p>所有拦截记录、违规账号、触发时间、原始内容永久归档，方便管理员追溯纠纷、留存举证依据。</p>
+                </div>
+                <div class="func-item">
+                    <h3>管理员白名单豁免</h3>
+                    <p>群主、管理账号加入白名单后不受风控规则限制，避免公告、指令、管理操作被机器人误拦截。</p>
+                </div>
+                <div class="func-item">
+                    <h3>自定义规则动态迭代</h3>
+                    <p>支持管理员自行添加屏蔽关键词、屏蔽句式，官方定期更新新型网络违规话术匹配规则，提升防御覆盖面。</p>
+                </div>
+            </div>
+
+            <!-- 官方联系方式 -->
+            <div class="contact-box">
+                <h3>OC99官方联系渠道</h3>
+                <div class="contact-item">📩 技术/商务对接邮箱：
+                    <a href="mailto:moss@aoeb101la.top">moss@aoeb101la.top</a>
+                </div>
+                <div class="contact-item">👥 官方交流&使用咨询QQ群：
+                    <a href="https://jq.qq.com/?_wv=1027&k=852601400" target="_blank">852601400</a>
+                </div>
+                <div class="contact-item">🌐 项目官方主页：
+                    <a href="https://yuan.oc99.top" target="_blank">yuan.oc99.top</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 适用场景说明 -->
+        <div class="card">
+            <h2>适用部署场景</h2>
+            <p>
+                1. QQ兴趣群、项目交流群、粉丝社群、工作室内部群组；<br>
+                2. Discord社区、海外同好频道、多成员公开讨论服务器；<br>
+                3. 长期运营需要规范化管理、规避违规风险的各类线上交流社群。
+            </p>
+        </div>
+
+        <!-- 页脚版权 -->
+        <footer>
+            © 2026 yuan.oc99.top OC99官方 | 御桉防御机器人 版权所有
+        </footer>
+    </div>
+</body>
+</html>
