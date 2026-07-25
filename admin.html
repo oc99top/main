@@ -53,7 +53,6 @@
             gap: 2rem;
         }
 
-        /* 左栏 表单 */
         .form-section {
             background: #f9fcff;
             border-radius: 20px;
@@ -124,7 +123,6 @@
             min-width: 120px;
         }
 
-        /* 圈子卡片 (列表) */
         .circle-list {
             margin: 1.2rem 0;
             background: #f2f6fb;
@@ -199,6 +197,13 @@
         .btn-outline:hover {
             background: #eaf1f9;
         }
+        .btn-success {
+            background: #1f7b5a;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #146347;
+        }
 
         .action-row {
             display: flex;
@@ -207,7 +212,6 @@
             margin-top: 0.5rem;
         }
 
-        /* 右栏 json 展示 */
         .json-preview {
             background: #0d1f2e;
             border-radius: 20px;
@@ -283,6 +287,23 @@
             flex-wrap: wrap;
         }
 
+        .status-badge {
+            background: #d4edda;
+            color: #0c5e3a;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .loading-overlay {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2b7aa2;
+            font-weight: 500;
+        }
+
         @media (max-width: 800px) {
             .editor-grid {
                 grid-template-columns: 1fr;
@@ -292,7 +313,6 @@
             }
         }
 
-        /* 模拟小标签 */
         .tag-badge {
             display: inline-block;
             background: #dae6f0;
@@ -313,7 +333,8 @@
 <div class="app">
     <h1>
         ⚙️ config.json 可视化编辑器
-        <small>OC99.TOP</small>
+        <small>OC99.TOP · 自动拉取</small>
+        <span id="loadStatus" style="margin-left:auto; font-size:0.8rem; font-weight:400; color:#4f718b;"></span>
     </h1>
 
     <div class="editor-grid">
@@ -322,29 +343,28 @@
             <h2>📋 公告</h2>
             <div class="field-group">
                 <label>标题</label>
-                <input type="text" id="noticeTitle" value="欢迎来到 OC99.TOP" placeholder="公告标题">
+                <input type="text" id="noticeTitle" placeholder="公告标题">
             </div>
             <div class="field-group">
                 <label>内容 <span style="font-weight:400; color:#4f718b;">(支持换行)</span></label>
-                <textarea id="noticeContent" rows="3" placeholder="公告内容，多行直接换行">我们致力于维护各个圈子的发展、安全与和谐。
-如果您需要技术支持或希望注册新圈子，请通过下方链接联系我们。</textarea>
+                <textarea id="noticeContent" rows="3" placeholder="公告内容，多行直接换行"></textarea>
             </div>
             <div class="inline-flex">
                 <div class="field-group">
                     <label>日期</label>
-                    <input type="text" id="noticeDate" value="2026-07-24" placeholder="2026-07-24">
+                    <input type="text" id="noticeDate" placeholder="2026-07-24">
                 </div>
                 <div class="field-group">
                     <label>作者</label>
-                    <input type="text" id="noticeAuthor" value="OC99 管理组" placeholder="作者">
+                    <input type="text" id="noticeAuthor" placeholder="作者">
                 </div>
                 <div class="field-group">
                     <label>类型</label>
                     <select id="noticeType">
-                        <option value="重要" selected>重要</option>
+                        <option value="重要">重要</option>
                         <option value="更新">更新</option>
                         <option value="维护">维护</option>
-                        <option value="普通">普通</option>
+                        <option value="普通" selected>普通</option>
                     </select>
                 </div>
             </div>
@@ -364,16 +384,16 @@
             </div>
 
             <div class="circle-list" id="circleListContainer">
-                <!-- 动态渲染圈子列表 -->
-                <div class="empty-hint">暂无圈子，添加后显示在此</div>
+                <div class="empty-hint">加载中...</div>
             </div>
 
             <div class="action-row">
-                <button class="btn btn-primary" id="generateBtn">✅ 生成配置</button>
+                <button class="btn btn-success" id="generateBtn">✅ 生成配置</button>
+                <button class="btn btn-outline" id="pullBtn">🔄 重新拉取</button>
                 <button class="btn btn-outline" id="resetDefaultBtn">↩️ 恢复默认</button>
             </div>
             <div style="margin-top:0.6rem; font-size:0.8rem; color:#4f718b;">
-                ⚡ 点击“生成配置”后在右侧预览 JSON，可复制粘贴。
+                ⚡ 页面加载时自动从 config.json 拉取配置。点击“生成配置”预览 JSON。
             </div>
         </div>
 
@@ -387,20 +407,20 @@
                 </span>
             </h2>
             <div class="json-code" id="jsonOutput">
-                // 点击 “生成配置” 预览 JSON
+                // 正在加载配置...
             </div>
         </div>
     </div>
 
     <div class="footer-note">
         <span>编辑后生成 JSON，手动复制到 config.json 文件。</span>
-        <span>OC99.TOP · 配置驱动</span>
+        <span>OC99.TOP · 配置驱动 · 自动拉取</span>
     </div>
 </div>
 
 <script>
     (function() {
-        // ----- 默认数据 -----
+        // ----- 默认数据 (作为后备) -----
         const DEFAULT_NOTICE = {
             title: "欢迎来到 OC99.TOP",
             content: "我们致力于维护各个圈子的发展、安全与和谐。\n如果您需要技术支持或希望注册新圈子，请通过下方链接联系我们。",
@@ -416,7 +436,8 @@
         ];
 
         // ----- 状态 -----
-        let circles = JSON.parse(JSON.stringify(DEFAULT_CIRCLES)); // 深拷贝
+        let circles = [];
+        let currentNotice = {};
 
         // DOM 引用
         const noticeTitle = document.getElementById('noticeTitle');
@@ -435,24 +456,27 @@
         const jsonOutput = document.getElementById('jsonOutput');
         const generateBtn = document.getElementById('generateBtn');
         const resetDefaultBtn = document.getElementById('resetDefaultBtn');
+        const pullBtn = document.getElementById('pullBtn');
         const addCircleBtn = document.getElementById('addCircleBtn');
         const copyBtn = document.getElementById('copyBtn');
         const copyToast = document.getElementById('copyToast');
+        const loadStatus = document.getElementById('loadStatus');
 
         // ----- 渲染圈子列表 (左栏) -----
         function renderCircleList() {
-            if (!circles.length) {
+            if (!circles || circles.length === 0) {
                 circleListContainer.innerHTML = `<div class="empty-hint">暂无圈子，添加后显示在此</div>`;
                 return;
             }
             let html = '';
             circles.forEach((c, index) => {
                 const tagsStr = (c.tags && c.tags.length) ? c.tags.map(t => `<span class="tag-badge">${t}</span>`).join(' ') : '';
+                const statusText = c.status || '未知';
                 html += `
                     <div class="circle-item">
                         <div class="info">
                             ${c.name || '未命名'} 
-                            <small>${c.status || '未知'}</small>
+                            <small>${statusText}</small>
                             ${c.url ? `<span style="color:#1f5e85; font-weight:400;">🔗</span>` : ''}
                             <span style="font-weight:400; color:#2d5a7a;">${tagsStr}</span>
                         </div>
@@ -470,7 +494,6 @@
                     if (!isNaN(idx) && idx >= 0 && idx < circles.length) {
                         circles.splice(idx, 1);
                         renderCircleList();
-                        // 自动生成预览（方便）
                         generateConfig();
                     }
                 });
@@ -488,11 +511,21 @@
             };
         }
 
+        // ----- 将公告数据填入表单 -----
+        function setNoticeToForm(notice) {
+            if (!notice) return;
+            noticeTitle.value = notice.title || '';
+            noticeContent.value = notice.content || '';
+            noticeDate.value = notice.date || '';
+            noticeAuthor.value = notice.author || '';
+            noticeType.value = notice.type || '普通';
+        }
+
         // ----- 生成 JSON 并展示 -----
         function generateConfig() {
             const notice = getNoticeFromForm();
-            // 清理圈子数据：保证每个圈子有基本字段，tags 转为数组
-            const cleanCircles = circles.map(c => {
+            // 清理圈子数据
+            const cleanCircles = (circles || []).map(c => {
                 let tags = [];
                 if (c.tags) {
                     if (Array.isArray(c.tags)) tags = c.tags;
@@ -519,27 +552,66 @@
             return pretty;
         }
 
-        // ----- 从 JSON 字符串加载到表单 (用于恢复默认) -----
-        function loadConfigToForm(notice, circlesData) {
-            // 公告
-            if (notice) {
-                noticeTitle.value = notice.title || '';
-                noticeContent.value = notice.content || '';
-                noticeDate.value = notice.date || '';
-                noticeAuthor.value = notice.author || '';
-                noticeType.value = notice.type || '普通';
-            }
-            // 圈子
-            if (Array.isArray(circlesData)) {
-                circles = JSON.parse(JSON.stringify(circlesData));
-                renderCircleList();
-            }
+        // ----- 从配置对象加载到表单和状态 -----
+        function loadConfigToEditor(config) {
+            if (!config) return false;
+            const notice = config.notice || {};
+            const circlesData = config.circles || [];
+
+            setNoticeToForm(notice);
+            circles = JSON.parse(JSON.stringify(circlesData));
+            renderCircleList();
             generateConfig();
+            return true;
         }
 
-        // ----- 重置为默认 -----
+        // ----- 从远程拉取 config.json -----
+        async function pullConfig() {
+            const CONFIG_PATH = 'config.json';
+            loadStatus.textContent = '⏳ 加载中...';
+            jsonOutput.textContent = '// 正在拉取 config.json ...';
+
+            try {
+                const response = await fetch(CONFIG_PATH, {
+                    cache: 'no-cache',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} — 无法加载 config.json`);
+                }
+
+                const config = await response.json();
+                if (!config || typeof config !== 'object') {
+                    throw new Error('配置格式无效');
+                }
+
+                const success = loadConfigToEditor(config);
+                if (success) {
+                    loadStatus.textContent = '✅ 已加载远程配置';
+                } else {
+                    throw new Error('配置数据不完整');
+                }
+            } catch (error) {
+                console.warn('拉取 config.json 失败，使用默认配置:', error);
+                loadStatus.textContent = '⚠️ 拉取失败，使用默认配置';
+                // 降级到默认
+                loadConfigToEditor({
+                    notice: DEFAULT_NOTICE,
+                    circles: DEFAULT_CIRCLES
+                });
+                // 但显示提示
+                jsonOutput.textContent = `// ⚠️ 无法加载 config.json，使用默认配置\n// ${error.message}\n\n` + jsonOutput.textContent;
+            }
+        }
+
+        // ----- 重置为默认 (仅作为后备) -----
         function resetToDefault() {
-            loadConfigToForm(DEFAULT_NOTICE, DEFAULT_CIRCLES);
+            loadConfigToEditor({
+                notice: DEFAULT_NOTICE,
+                circles: DEFAULT_CIRCLES
+            });
+            loadStatus.textContent = '↩️ 已恢复默认配置';
         }
 
         // ----- 添加圈子 (从表单) -----
@@ -553,7 +625,6 @@
             if (tagsRaw) {
                 tags = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
             }
-            // 简单校验 status
             const validStatus = ['active', 'maintenance', 'offline'];
             const finalStatus = validStatus.includes(status) ? status : 'active';
 
@@ -565,7 +636,6 @@
                 tags: tags
             });
 
-            // 清空输入（保留部分方便连续添加）
             circleName.value = '';
             circleStatus.value = '';
             circleUrl.value = '';
@@ -579,7 +649,7 @@
         // ----- 复制 JSON -----
         function copyJson() {
             const text = jsonOutput.textContent;
-            if (!text || text.startsWith('//')) {
+            if (!text || text.startsWith('//') || text.includes('正在加载')) {
                 alert('请先生成配置 (点击“生成配置”按钮)');
                 return;
             }
@@ -587,7 +657,6 @@
                 copyToast.classList.add('show');
                 setTimeout(() => copyToast.classList.remove('show'), 2000);
             }).catch(() => {
-                // fallback
                 const area = document.createElement('textarea');
                 area.value = text;
                 document.body.appendChild(area);
@@ -600,17 +669,18 @@
         }
 
         // ----- 初始化 -----
-        function init() {
-            // 载入默认
-            resetToDefault();
+        async function init() {
+            // 先拉取远程配置
+            await pullConfig();
 
             // 事件绑定
             generateBtn.addEventListener('click', generateConfig);
             resetDefaultBtn.addEventListener('click', resetToDefault);
+            pullBtn.addEventListener('click', pullConfig);
             addCircleBtn.addEventListener('click', addCircleFromForm);
             copyBtn.addEventListener('click', copyJson);
 
-            // 额外：回车快捷添加（在任意输入框按回车触发添加）
+            // 回车快捷添加
             const inputs = [circleName, circleStatus, circleUrl, circleDesc, circleTags];
             inputs.forEach(inp => {
                 inp.addEventListener('keydown', (e) => {
