@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OC99.TOP · 配置编辑器</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
@@ -38,13 +34,54 @@
             gap: 0.5rem;
             border-bottom: 2px solid #e6edf4;
             padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
         h1 small {
             font-weight: 400;
             font-size: 1rem;
             color: #4c6f8a;
             margin-left: 0.4rem;
+        }
+
+        /* 选项卡 */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #e6edf4;
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.6rem 1.6rem;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #4f718b;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            position: relative;
+            bottom: -2px;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn:hover {
+            background: #f1f7fc;
+            color: #1b4b6b;
+        }
+        .tab-btn.active {
+            color: #1b5e85;
+            border-bottom-color: #1b5e85;
+            background: #f9fcff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
         }
 
         .editor-grid {
@@ -181,29 +218,17 @@
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
+            font-family: inherit;
         }
 
-        .btn-primary {
-            background: #1b5e85;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #124a6b;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #b7cedf;
-        }
-        .btn-outline:hover {
-            background: #eaf1f9;
-        }
-        .btn-success {
-            background: #1f7b5a;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #146347;
-        }
+        .btn-primary { background: #1b5e85; color: white; }
+        .btn-primary:hover { background: #124a6b; }
+        .btn-outline { background: transparent; border: 1px solid #b7cedf; }
+        .btn-outline:hover { background: #eaf1f9; }
+        .btn-success { background: #1f7b5a; color: white; }
+        .btn-success:hover { background: #146347; }
+        .btn-download { background: #5a4f8a; color: white; }
+        .btn-download:hover { background: #473d71; }
 
         .action-row {
             display: flex;
@@ -231,6 +256,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .json-preview h2 .json-actions {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
         }
         .json-preview h2 button {
             background: #2a4b64;
@@ -241,6 +273,7 @@
             font-weight: 500;
             font-size: 0.8rem;
             cursor: pointer;
+            font-family: inherit;
         }
         .json-preview h2 button:hover {
             background: #3c6380;
@@ -271,10 +304,7 @@
             opacity: 0;
             transition: 0.2s;
         }
-
-        .copy-toast.show {
-            opacity: 1;
-        }
+        .copy-toast.show { opacity: 1; }
 
         .footer-note {
             margin-top: 2rem;
@@ -296,23 +326,6 @@
             font-weight: 600;
         }
 
-        .loading-overlay {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #2b7aa2;
-            font-weight: 500;
-        }
-
-        @media (max-width: 800px) {
-            .editor-grid {
-                grid-template-columns: 1fr;
-            }
-            .app {
-                padding: 1.2rem;
-            }
-        }
-
         .tag-badge {
             display: inline-block;
             background: #dae6f0;
@@ -327,100 +340,153 @@
             font-style: italic;
             padding: 0.2rem 0;
         }
+
+        .load-status {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #4f718b;
+        }
+
+        @media (max-width: 800px) {
+            .editor-grid { grid-template-columns: 1fr; }
+            .app { padding: 1.2rem; }
+            .tabs { gap: 0; }
+            .tab-btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
 <div class="app">
     <h1>
-        ⚙️ config.json 可视化编辑器
-        <small>OC99.TOP · 自动拉取</small>
-        <span id="loadStatus" style="margin-left:auto; font-size:0.8rem; font-weight:400; color:#4f718b;"></span>
+        ⚙️ 配置编辑器
+        <small>OC99.TOP · 双文件管理</small>
+        <span class="load-status" id="loadStatus" style="margin-left:auto;"></span>
     </h1>
 
-    <div class="editor-grid">
-        <!-- 左：表单 -->
-        <div class="form-section">
-            <h2>📋 公告</h2>
-            <div class="field-group">
-                <label>标题</label>
-                <input type="text" id="noticeTitle" placeholder="公告标题">
-            </div>
-            <div class="field-group">
-                <label>内容 <span style="font-weight:400; color:#4f718b;">(支持换行)</span></label>
-                <textarea id="noticeContent" rows="3" placeholder="公告内容，多行直接换行"></textarea>
-            </div>
-            <div class="inline-flex">
+    <!-- 选项卡 -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="notice">📋 公告配置 (config.json)</button>
+        <button class="tab-btn" data-tab="circles">🧩 圈子配置 (circles.json)</button>
+    </div>
+
+    <!-- Tab 1: 公告配置 -->
+    <div class="tab-content active" id="tabNotice">
+        <div class="editor-grid">
+            <!-- 左：公告表单 -->
+            <div class="form-section">
+                <h2>📋 编辑公告</h2>
                 <div class="field-group">
-                    <label>日期</label>
-                    <input type="text" id="noticeDate" placeholder="2026-07-24">
+                    <label>标题</label>
+                    <input type="text" id="noticeTitle" placeholder="公告标题">
                 </div>
                 <div class="field-group">
-                    <label>作者</label>
-                    <input type="text" id="noticeAuthor" placeholder="作者">
+                    <label>内容 <span style="font-weight:400; color:#4f718b;">(支持换行)</span></label>
+                    <textarea id="noticeContent" rows="3" placeholder="公告内容，多行直接换行"></textarea>
                 </div>
-                <div class="field-group">
-                    <label>类型</label>
-                    <select id="noticeType">
-                        <option value="重要">重要</option>
-                        <option value="更新">更新</option>
-                        <option value="维护">维护</option>
-                        <option value="普通" selected>普通</option>
-                    </select>
+                <div class="inline-flex">
+                    <div class="field-group">
+                        <label>日期</label>
+                        <input type="text" id="noticeDate" placeholder="2026-07-24">
+                    </div>
+                    <div class="field-group">
+                        <label>作者</label>
+                        <input type="text" id="noticeAuthor" placeholder="作者">
+                    </div>
+                    <div class="field-group">
+                        <label>类型</label>
+                        <select id="noticeType">
+                            <option value="重要">重要</option>
+                            <option value="更新">更新</option>
+                            <option value="维护">维护</option>
+                            <option value="普通" selected>普通</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-success" id="noticeGenerateBtn">✅ 生成 config.json</button>
+                    <button class="btn btn-outline" id="noticePullBtn">🔄 重新拉取</button>
+                    <button class="btn btn-outline" id="noticeResetBtn">↩️ 恢复默认</button>
+                </div>
+                <div style="margin-top:0.6rem; font-size:0.8rem; color:#4f718b;">
+                    ⚡ 编辑后生成 JSON，复制或下载后保存为 <code>config.json</code>。
                 </div>
             </div>
 
-            <hr style="border:1px solid #dce7f0; margin: 1.8rem 0 1.2rem;">
-
-            <h2 style="margin-bottom:0.5rem;">🧩 小圈列表</h2>
-            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.8rem;">
-                <input type="text" id="circleName" placeholder="圈名" style="flex:1; min-width:100px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
-                <input type="text" id="circleStatus" placeholder="状态 (active/maintenance/offline)" style="flex:1; min-width:120px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
-                <input type="text" id="circleUrl" placeholder="链接 (可选)" style="flex:1; min-width:100px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
-                <button class="btn btn-primary" id="addCircleBtn" style="padding:0.3rem 1.2rem;">➕ 添加</button>
-            </div>
-            <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
-                <input type="text" id="circleDesc" placeholder="描述" style="flex:2; min-width:150px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
-                <input type="text" id="circleTags" placeholder="标签 逗号分隔 (如: 技术,开源)" style="flex:1; min-width:120px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
-            </div>
-
-            <div class="circle-list" id="circleListContainer">
-                <div class="empty-hint">加载中...</div>
-            </div>
-
-            <div class="action-row">
-                <button class="btn btn-success" id="generateBtn">✅ 生成配置</button>
-                <button class="btn btn-outline" id="pullBtn">🔄 重新拉取</button>
-                <button class="btn btn-outline" id="resetDefaultBtn">↩️ 恢复默认</button>
-            </div>
-            <div style="margin-top:0.6rem; font-size:0.8rem; color:#4f718b;">
-                ⚡ 页面加载时自动从 config.json 拉取配置。点击“生成配置”预览 JSON。
+            <!-- 右：config.json 预览 -->
+            <div class="json-preview">
+                <h2>
+                    📄 config.json
+                    <span class="json-actions">
+                        <span class="copy-toast" id="noticeCopyToast">已复制</span>
+                        <button id="noticeCopyBtn">📋 复制</button>
+                        <button id="noticeDownloadBtn">⬇️ 下载</button>
+                    </span>
+                </h2>
+                <div class="json-code" id="noticeJsonOutput">
+                    // 正在加载配置...
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- 右：json 展示 -->
-        <div class="json-preview">
-            <h2>
-                📄 config.json
-                <span style="display:flex; gap:0.8rem; align-items:center;">
-                    <span class="copy-toast" id="copyToast">已复制</span>
-                    <button id="copyBtn">📋 复制</button>
-                </span>
-            </h2>
-            <div class="json-code" id="jsonOutput">
-                // 正在加载配置...
+    <!-- Tab 2: 圈子配置 -->
+    <div class="tab-content" id="tabCircles">
+        <div class="editor-grid">
+            <!-- 左：圈子表单 -->
+            <div class="form-section">
+                <h2 style="margin-bottom:0.5rem;">🧩 编辑小圈</h2>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.8rem;">
+                    <input type="text" id="circleName" placeholder="圈名" style="flex:1; min-width:100px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
+                    <input type="text" id="circleStatus" placeholder="状态 (active/maintenance/offline)" style="flex:1; min-width:120px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
+                    <input type="text" id="circleUrl" placeholder="链接 (可选)" style="flex:1; min-width:100px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
+                    <button class="btn btn-primary" id="addCircleBtn" style="padding:0.3rem 1.2rem;">➕ 添加</button>
+                </div>
+                <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
+                    <input type="text" id="circleDesc" placeholder="描述" style="flex:2; min-width:150px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
+                    <input type="text" id="circleTags" placeholder="标签 逗号分隔 (如: 技术,开源)" style="flex:1; min-width:120px; padding:0.4rem 0.8rem; border:1px solid #d0dde9; border-radius:40px;">
+                </div>
+
+                <div class="circle-list" id="circleListContainer">
+                    <div class="empty-hint">加载中...</div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-success" id="circlesGenerateBtn">✅ 生成 circles.json</button>
+                    <button class="btn btn-outline" id="circlesPullBtn">🔄 重新拉取</button>
+                    <button class="btn btn-outline" id="circlesResetBtn">↩️ 恢复默认</button>
+                </div>
+                <div style="margin-top:0.6rem; font-size:0.8rem; color:#4f718b;">
+                    ⚡ 编辑后生成 JSON，复制或下载后保存为 <code>circles.json</code>。
+                </div>
+            </div>
+
+            <!-- 右：circles.json 预览 -->
+            <div class="json-preview">
+                <h2>
+                    📄 circles.json
+                    <span class="json-actions">
+                        <span class="copy-toast" id="circlesCopyToast">已复制</span>
+                        <button id="circlesCopyBtn">📋 复制</button>
+                        <button id="circlesDownloadBtn">⬇️ 下载</button>
+                    </span>
+                </h2>
+                <div class="json-code" id="circlesJsonOutput">
+                    // 正在加载配置...
+                </div>
             </div>
         </div>
     </div>
 
     <div class="footer-note">
-        <span>编辑后生成 JSON，手动复制到 config.json 文件。</span>
-        <span>OC99.TOP · 配置驱动 · 自动拉取</span>
+        <span>编辑后分别生成 JSON，手动保存到对应的文件 (config.json / circles.json)。也可点击「下载」直接保存文件。</span>
+        <span>OC99.TOP · 配置驱动 · 双文件管理</span>
     </div>
 </div>
 
 <script>
     (function() {
-        // ----- 默认数据 (作为后备) -----
+        // ========== 默认数据 ==========
         const DEFAULT_NOTICE = {
             title: "欢迎来到 OC99.TOP",
             content: "我们致力于维护各个圈子的发展、安全与和谐。\n如果您需要技术支持或希望注册新圈子，请通过下方链接联系我们。",
@@ -435,72 +501,53 @@
             { name: "示例圈 C", description: "由于业务调整，该圈子暂时离线，重启时间待定。", status: "offline", url: "", tags: ["暂停"] }
         ];
 
-        // ----- 状态 -----
+        // ========== 状态 ==========
         let circles = [];
-        let currentNotice = {};
 
-        // DOM 引用
+        // ========== DOM: 公告相关 ==========
         const noticeTitle = document.getElementById('noticeTitle');
         const noticeContent = document.getElementById('noticeContent');
         const noticeDate = document.getElementById('noticeDate');
         const noticeAuthor = document.getElementById('noticeAuthor');
         const noticeType = document.getElementById('noticeType');
+        const noticeJsonOutput = document.getElementById('noticeJsonOutput');
+        const noticeGenerateBtn = document.getElementById('noticeGenerateBtn');
+        const noticePullBtn = document.getElementById('noticePullBtn');
+        const noticeResetBtn = document.getElementById('noticeResetBtn');
+        const noticeCopyBtn = document.getElementById('noticeCopyBtn');
+        const noticeDownloadBtn = document.getElementById('noticeDownloadBtn');
+        const noticeCopyToast = document.getElementById('noticeCopyToast');
 
+        // ========== DOM: 圈子相关 ==========
         const circleName = document.getElementById('circleName');
         const circleStatus = document.getElementById('circleStatus');
         const circleUrl = document.getElementById('circleUrl');
         const circleDesc = document.getElementById('circleDesc');
         const circleTags = document.getElementById('circleTags');
-
         const circleListContainer = document.getElementById('circleListContainer');
-        const jsonOutput = document.getElementById('jsonOutput');
-        const generateBtn = document.getElementById('generateBtn');
-        const resetDefaultBtn = document.getElementById('resetDefaultBtn');
-        const pullBtn = document.getElementById('pullBtn');
+        const circlesJsonOutput = document.getElementById('circlesJsonOutput');
         const addCircleBtn = document.getElementById('addCircleBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const copyToast = document.getElementById('copyToast');
+        const circlesGenerateBtn = document.getElementById('circlesGenerateBtn');
+        const circlesPullBtn = document.getElementById('circlesPullBtn');
+        const circlesResetBtn = document.getElementById('circlesResetBtn');
+        const circlesCopyBtn = document.getElementById('circlesCopyBtn');
+        const circlesDownloadBtn = document.getElementById('circlesDownloadBtn');
+        const circlesCopyToast = document.getElementById('circlesCopyToast');
+
         const loadStatus = document.getElementById('loadStatus');
 
-        // ----- 渲染圈子列表 (左栏) -----
-        function renderCircleList() {
-            if (!circles || circles.length === 0) {
-                circleListContainer.innerHTML = `<div class="empty-hint">暂无圈子，添加后显示在此</div>`;
-                return;
-            }
-            let html = '';
-            circles.forEach((c, index) => {
-                const tagsStr = (c.tags && c.tags.length) ? c.tags.map(t => `<span class="tag-badge">${t}</span>`).join(' ') : '';
-                const statusText = c.status || '未知';
-                html += `
-                    <div class="circle-item">
-                        <div class="info">
-                            ${c.name || '未命名'} 
-                            <small>${statusText}</small>
-                            ${c.url ? `<span style="color:#1f5e85; font-weight:400;">🔗</span>` : ''}
-                            <span style="font-weight:400; color:#2d5a7a;">${tagsStr}</span>
-                        </div>
-                        <div class="actions">
-                            <button data-index="${index}" class="remove-circle-btn">✕</button>
-                        </div>
-                    </div>
-                `;
+        // ========== 选项卡切换 ==========
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const tabId = 'tab' + this.dataset.tab.charAt(0).toUpperCase() + this.dataset.tab.slice(1);
+                document.getElementById(tabId).classList.add('active');
             });
-            circleListContainer.innerHTML = html;
-            // 绑定删除事件
-            document.querySelectorAll('.remove-circle-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const idx = parseInt(this.dataset.index, 10);
-                    if (!isNaN(idx) && idx >= 0 && idx < circles.length) {
-                        circles.splice(idx, 1);
-                        renderCircleList();
-                        generateConfig();
-                    }
-                });
-            });
-        }
+        });
 
-        // ----- 从表单读取公告对象 -----
+        // ========== 公告相关函数 ==========
         function getNoticeFromForm() {
             return {
                 title: noticeTitle.value.trim() || '公告',
@@ -511,7 +558,6 @@
             };
         }
 
-        // ----- 将公告数据填入表单 -----
         function setNoticeToForm(notice) {
             if (!notice) return;
             noticeTitle.value = notice.title || '';
@@ -521,16 +567,46 @@
             noticeType.value = notice.type || '普通';
         }
 
-        // ----- 生成 JSON 并展示 -----
-        function generateConfig() {
+        function generateNoticeConfig() {
             const notice = getNoticeFromForm();
-            // 清理圈子数据
-            const cleanCircles = (circles || []).map(c => {
-                let tags = [];
+            const config = { notice };
+            const pretty = JSON.stringify(config, null, 2);
+            noticeJsonOutput.textContent = pretty;
+            return pretty;
+        }
+
+        // ========== 圈子相关函数 ==========
+        function renderCircleList() {
+            if (!circles || circles.length === 0) {
+                circleListContainer.innerHTML = '<div class="empty-hint">暂无圈子，添加后显示在此</div>';
+                return;
+            }
+            let html = '';
+            circles.forEach((c, index) => {
+                const tagsStr = (c.tags && c.tags.length) ? c.tags.map(t => '<span class="tag-badge">' + t + '</span>').join(' ') : '';
+                const statusText = c.status || '未知';
+                html += '<div class="circle-item"><div class="info">' + (c.name || '未命名') + ' <small>' + statusText + '</small>' + (c.url ? '<span style="color:#1f5e85;font-weight:400;">🔗</span>' : '') + '<span style="font-weight:400;color:#2d5a7a;">' + tagsStr + '</span></div><div class="actions"><button data-index="' + index + '" class="remove-circle-btn">✕</button></div></div>';
+            });
+            circleListContainer.innerHTML = html;
+            document.querySelectorAll('.remove-circle-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var idx = parseInt(this.dataset.index, 10);
+                    if (!isNaN(idx) && idx >= 0 && idx < circles.length) {
+                        circles.splice(idx, 1);
+                        renderCircleList();
+                        generateCirclesConfig();
+                    }
+                });
+            });
+        }
+
+        function generateCirclesConfig() {
+            var cleanCircles = (circles || []).map(function(c) {
+                var tags = [];
                 if (c.tags) {
                     if (Array.isArray(c.tags)) tags = c.tags;
                     else if (typeof c.tags === 'string') {
-                        tags = c.tags.split(',').map(s => s.trim()).filter(Boolean);
+                        tags = c.tags.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
                     }
                 }
                 return {
@@ -542,91 +618,79 @@
                 };
             });
 
-            const config = {
-                notice: notice,
-                circles: cleanCircles
-            };
-
-            const pretty = JSON.stringify(config, null, 2);
-            jsonOutput.textContent = pretty;
+            var pretty = JSON.stringify(cleanCircles, null, 2);
+            circlesJsonOutput.textContent = pretty;
             return pretty;
         }
 
-        // ----- 从配置对象加载到表单和状态 -----
-        function loadConfigToEditor(config) {
-            if (!config) return false;
-            const notice = config.notice || {};
-            const circlesData = config.circles || [];
-
-            setNoticeToForm(notice);
-            circles = JSON.parse(JSON.stringify(circlesData));
+        function loadCirclesToEditor(circlesData) {
+            circles = JSON.parse(JSON.stringify(circlesData || []));
             renderCircleList();
-            generateConfig();
-            return true;
+            generateCirclesConfig();
         }
 
-        // ----- 从远程拉取 config.json -----
-        async function pullConfig() {
-            const CONFIG_PATH = 'config.json';
-            loadStatus.textContent = '⏳ 加载中...';
-            jsonOutput.textContent = '// 正在拉取 config.json ...';
-
+        // ========== 从远程拉取 ==========
+        async function pullNotice() {
+            loadStatus.textContent = '⏳ 加载 config.json...';
+            noticeJsonOutput.textContent = '// 正在拉取 config.json ...';
             try {
-                const response = await fetch(CONFIG_PATH, {
-                    cache: 'no-cache',
-                    headers: { 'Accept': 'application/json' }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status} — 无法加载 config.json`);
-                }
-
-                const config = await response.json();
-                if (!config || typeof config !== 'object') {
-                    throw new Error('配置格式无效');
-                }
-
-                const success = loadConfigToEditor(config);
-                if (success) {
-                    loadStatus.textContent = '✅ 已加载远程配置';
-                } else {
-                    throw new Error('配置数据不完整');
-                }
-            } catch (error) {
-                console.warn('拉取 config.json 失败，使用默认配置:', error);
-                loadStatus.textContent = '⚠️ 拉取失败，使用默认配置';
-                // 降级到默认
-                loadConfigToEditor({
-                    notice: DEFAULT_NOTICE,
-                    circles: DEFAULT_CIRCLES
-                });
-                // 但显示提示
-                jsonOutput.textContent = `// ⚠️ 无法加载 config.json，使用默认配置\n// ${error.message}\n\n` + jsonOutput.textContent;
+                var resp = await fetch('config.json', { cache: 'no-cache', headers: { 'Accept': 'application/json' } });
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                var config = await resp.json();
+                if (!config || typeof config !== 'object') throw new Error('格式无效');
+                setNoticeToForm(config.notice || {});
+                generateNoticeConfig();
+                loadStatus.textContent = '✅ config.json 已加载';
+            } catch (e) {
+                console.warn('拉取 config.json 失败:', e);
+                loadStatus.textContent = '⚠️ 拉取失败，使用默认';
+                setNoticeToForm(DEFAULT_NOTICE);
+                generateNoticeConfig();
             }
         }
 
-        // ----- 重置为默认 (仅作为后备) -----
-        function resetToDefault() {
-            loadConfigToEditor({
-                notice: DEFAULT_NOTICE,
-                circles: DEFAULT_CIRCLES
-            });
-            loadStatus.textContent = '↩️ 已恢复默认配置';
+        async function pullCircles() {
+            loadStatus.textContent = '⏳ 加载 circles.json...';
+            circlesJsonOutput.textContent = '// 正在拉取 circles.json ...';
+            try {
+                var resp = await fetch('circles.json', { cache: 'no-cache', headers: { 'Accept': 'application/json' } });
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                var data = await resp.json();
+                if (!Array.isArray(data)) throw new Error('格式无效');
+                loadCirclesToEditor(data);
+                loadStatus.textContent = '✅ circles.json 已加载';
+            } catch (e) {
+                console.warn('拉取 circles.json 失败:', e);
+                loadStatus.textContent = '⚠️ 拉取失败，使用默认';
+                loadCirclesToEditor(DEFAULT_CIRCLES);
+            }
         }
 
-        // ----- 添加圈子 (从表单) -----
+        // ========== 重置默认 ==========
+        function resetNotice() {
+            setNoticeToForm(DEFAULT_NOTICE);
+            generateNoticeConfig();
+            loadStatus.textContent = '↩️ 已恢复默认公告';
+        }
+
+        function resetCircles() {
+            loadCirclesToEditor(DEFAULT_CIRCLES);
+            loadStatus.textContent = '↩️ 已恢复默认圈子';
+        }
+
+        // ========== 添加圈子 ==========
         function addCircleFromForm() {
-            const name = circleName.value.trim() || '未命名';
-            const status = circleStatus.value.trim() || 'active';
-            const url = circleUrl.value.trim() || '';
-            const description = circleDesc.value.trim() || '';
-            const tagsRaw = circleTags.value.trim();
-            let tags = [];
+            var name = circleName.value.trim() || '未命名';
+            var status = circleStatus.value.trim() || 'active';
+            var url = circleUrl.value.trim() || '';
+            var description = circleDesc.value.trim() || '';
+            var tagsRaw = circleTags.value.trim();
+            var tags = [];
             if (tagsRaw) {
-                tags = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
+                tags = tagsRaw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
             }
-            const validStatus = ['active', 'maintenance', 'offline'];
-            const finalStatus = validStatus.includes(status) ? status : 'active';
+            var validStatus = ['active', 'maintenance', 'offline'];
+            var finalStatus = validStatus.indexOf(status) !== -1 ? status : 'active';
 
             circles.push({
                 name: name,
@@ -643,47 +707,67 @@
             circleTags.value = '';
 
             renderCircleList();
-            generateConfig();
+            generateCirclesConfig();
         }
 
-        // ----- 复制 JSON -----
-        function copyJson() {
-            const text = jsonOutput.textContent;
-            if (!text || text.startsWith('//') || text.includes('正在加载')) {
-                alert('请先生成配置 (点击“生成配置”按钮)');
+        // ========== 复制 ==========
+        function copyText(text, toastEl) {
+            if (!text || text.indexOf('//') === 0) {
+                alert('请先生成配置');
                 return;
             }
-            navigator.clipboard.writeText(text).then(() => {
-                copyToast.classList.add('show');
-                setTimeout(() => copyToast.classList.remove('show'), 2000);
-            }).catch(() => {
-                const area = document.createElement('textarea');
+            navigator.clipboard.writeText(text).then(function() {
+                toastEl.classList.add('show');
+                setTimeout(function() { toastEl.classList.remove('show'); }, 2000);
+            }).catch(function() {
+                var area = document.createElement('textarea');
                 area.value = text;
                 document.body.appendChild(area);
                 area.select();
                 document.execCommand('copy');
                 area.remove();
-                copyToast.classList.add('show');
-                setTimeout(() => copyToast.classList.remove('show'), 2000);
+                toastEl.classList.add('show');
+                setTimeout(function() { toastEl.classList.remove('show'); }, 2000);
             });
         }
 
-        // ----- 初始化 -----
+        // ========== 下载 ==========
+        function downloadJson(content, filename) {
+            if (!content || content.indexOf('//') === 0) {
+                alert('请先生成配置');
+                return;
+            }
+            var blob = new Blob([content], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ========== 初始化 ==========
         async function init() {
-            // 先拉取远程配置
-            await pullConfig();
+            await Promise.all([pullNotice(), pullCircles()]);
 
-            // 事件绑定
-            generateBtn.addEventListener('click', generateConfig);
-            resetDefaultBtn.addEventListener('click', resetToDefault);
-            pullBtn.addEventListener('click', pullConfig);
+            noticeGenerateBtn.addEventListener('click', generateNoticeConfig);
+            noticePullBtn.addEventListener('click', pullNotice);
+            noticeResetBtn.addEventListener('click', resetNotice);
+            noticeCopyBtn.addEventListener('click', function() { copyText(noticeJsonOutput.textContent, noticeCopyToast); });
+            noticeDownloadBtn.addEventListener('click', function() { downloadJson(noticeJsonOutput.textContent, 'config.json'); });
+
+            circlesGenerateBtn.addEventListener('click', generateCirclesConfig);
+            circlesPullBtn.addEventListener('click', pullCircles);
+            circlesResetBtn.addEventListener('click', resetCircles);
             addCircleBtn.addEventListener('click', addCircleFromForm);
-            copyBtn.addEventListener('click', copyJson);
+            circlesCopyBtn.addEventListener('click', function() { copyText(circlesJsonOutput.textContent, circlesCopyToast); });
+            circlesDownloadBtn.addEventListener('click', function() { downloadJson(circlesJsonOutput.textContent, 'circles.json'); });
 
-            // 回车快捷添加
-            const inputs = [circleName, circleStatus, circleUrl, circleDesc, circleTags];
-            inputs.forEach(inp => {
-                inp.addEventListener('keydown', (e) => {
+            var inputs = [circleName, circleStatus, circleUrl, circleDesc, circleTags];
+            inputs.forEach(function(inp) {
+                inp.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
                         addCircleFromForm();

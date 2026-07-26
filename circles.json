@@ -1,0 +1,23 @@
+[
+  {
+    "name": "病娇圈",
+    "description": "没有描述",
+    "status": "active",
+    "url": "https://bj.oc99.top",
+    "tags": ["小圈"]
+  },
+  {
+    "name": "UMD",
+    "description": "《无机杀手》二创圈",
+    "status": "active",
+    "url": "https://umd.oc99.top",
+    "tags": ["二创", "同人"]
+  },
+  {
+    "name": "ch国拟",
+    "description": "",
+    "status": "maintenance",
+    "url": "https://ch.oc99.top",
+    "tags": ["ch", "二创", "原创"]
+  }
+]
